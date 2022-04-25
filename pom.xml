@@ -6,7 +6,11 @@
 
   <groupId>ma.emsi</groupId>
   <artifactId>servises</artifactId>
+  <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
+  <modules>
+    <module>customer</module>
+  </modules>
 
   <name>servises</name>
   <!-- FIXME change it to the project's website -->
