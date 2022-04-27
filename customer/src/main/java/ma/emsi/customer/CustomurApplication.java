@@ -9,3 +9,4 @@ public class CustomurApplication {
         SpringApplication.run(CustomurApplication.class,args);
     }
 }
+//TODO stop in lesson 7 docker
