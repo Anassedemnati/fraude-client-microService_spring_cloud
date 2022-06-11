@@ -16,7 +16,9 @@ public class CustomerService{
             .build();
     //TODO : check if email is valid
     //TODO : check if email not taken
+        // TODO : check if fraudster
     //store customer to db
         customerRepository.save(customer);
+        // TODO : send notification
     }
 }
