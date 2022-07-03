@@ -4,6 +4,7 @@ package ma.emsi.fraud;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ma.emsi.clients.fraud.FraudChekResponse;
 
 @RestController
 @RequestMapping("api/v1/fraud-check")

@@ -2,6 +2,8 @@ package ma.emsi.customer;
 
 
 import lombok.AllArgsConstructor;
+import ma.emsi.clients.fraud.FraudChekResponse;
+import ma.emsi.clients.fraud.FraudClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 public class CustomerService{
     private final CustomerRepository customerRepository;
     private final RestTemplate restTemplate;
+    private final FraudClient fraudClient;
     public void registerCustomer(CustomerRegistrationRequest request) {
     Customer customer = Customer.builder()
             .firstName(request.firstName())
@@ -20,12 +23,10 @@ public class CustomerService{
     //TODO : check if email not taken
         customerRepository.saveAndFlush(customer);
         // TODO : check if fraudster
-        FraudChekResponse fraudChekResponse = restTemplate.getForObject(
-                "http://FRAUD/api/v1/fraud-check/{customerId}",
-                FraudChekResponse.class,
-                customer.getId()
 
-        );
+
+        FraudChekResponse fraudChekResponse = fraudClient.isFraudster(customer.getId());
+
         if (fraudChekResponse.isFraudster()){
             throw new IllegalStateException("fraudster");
         }
