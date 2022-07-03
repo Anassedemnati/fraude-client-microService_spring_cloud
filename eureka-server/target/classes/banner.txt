@@ -5,4 +5,5 @@
 ██      ██    ██ ██   ██ ██      ██  ██  ██   ██              ██ ██      ██   ██  ██  ██  ██      ██   ██
 ███████  ██████  ██   ██ ███████ ██   ██ ██   ██ ███████ ███████ ███████ ██   ██   ████   ███████ ██   ██
 
-
+${application.title}   ${application.version}
+powered by Spring Boot ${spring-boot.version}
