@@ -2,6 +2,7 @@ package ma.emsi.customer;
 
 
 import lombok.AllArgsConstructor;
+import ma.emsi.amqp.RabbitMQMessageProducer;
 import ma.emsi.clients.fraud.FraudChekResponse;
 import ma.emsi.clients.fraud.FraudClient;
 import ma.emsi.clients.notification.NotificationClient;
@@ -13,8 +14,8 @@ import org.springframework.web.client.RestTemplate;
 @AllArgsConstructor
 public class CustomerService{
     private final CustomerRepository customerRepository;
-    private final NotificationClient notificationClient;
     private final FraudClient fraudClient;
+    private final RabbitMQMessageProducer rabbitMQMessageProducer;
     public void registerCustomer(CustomerRegistrationRequest request) {
     Customer customer = Customer.builder()
             .firstName(request.firstName())
@@ -33,14 +34,17 @@ public class CustomerService{
         }
 
         //  send notification
-        // todo: make it async. i.e add to queue
-        notificationClient.sendNotification(
-                new NotificationRequest(
-                        customer.getId(),
-                        customer.getEmail(),
-                        String.format("Hi %s, welcome to Emsi...", customer.getFirstName())
-                )
-        );
 
+        NotificationRequest notificationRequest = new NotificationRequest(
+                customer.getId(),
+                customer.getEmail(),
+                String.format("Hi %s, welcome to Emsi...", customer.getFirstName())
+        );
+        rabbitMQMessageProducer.publish(
+                notificationRequest,
+                "internal.exchange",
+                "internal.notification.routing-key"
+
+        );
     }
 }
