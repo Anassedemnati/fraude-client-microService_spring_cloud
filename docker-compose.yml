@@ -66,6 +66,51 @@ services:
     depends_on:
       - zipkin
       - eureka-server
+  customer:
+    image: anassedemnati/customer:latest
+    container_name: customer
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - zipkin
+      - eureka-server
+      - postgres
+      - rabbitmq
+  fraud:
+    image: anassedemnati/fraud:latest
+    container_name: fraud
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - zipkin
+      - eureka-server
+      - postgres
+      - rabbitmq
+  notification:
+    image: anassedemnati/notification:latest
+    container_name: notification
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - zipkin
+      - eureka-server
+      - postgres
+      - rabbitmq
 networks:
   postgres:
     driver: bridge
